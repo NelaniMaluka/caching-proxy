@@ -1,6 +1,6 @@
-# Caching Proxy API Service 
+# Caching Proxy Service 
 
-A **high-performance Java-based caching proxy** that fetches, caches, and serves API responses — supporting **text, images, and binary files** (PDFs, ZIPs, etc.). Built with modern **Java 23** features, **HTTP Client**, **Failsafe** for resilient retries, and a custom **LRU cache**.
+A **high-performance Java-based caching proxy** that fetches, caches, and serves responses — supporting **text, images, and binary files** (PDFs, ZIPs, etc.). Built with modern **Java 23** features, **HTTP Client**, **Failsafe** for resilient retries, and a custom **LRU cache**.
 
 Perfect for reducing API load, speeding up repeated requests, and handling unreliable third-party services gracefully.
 
