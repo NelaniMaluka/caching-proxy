@@ -16,11 +16,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Log4j2
-public class ApiServiceProxy implements ApiService{
+public class ApiServiceProxy implements ApiService {
 
     private final ApiService apiService;
 
-    // LRU cache for API responses (max 50 entries). Each entry may also have an optional expiration time.
+    // LRU cache for API responses (max 50 entries). Each entry may also have an
+    // optional expiration time.
     private final Map<String, CacheEntry> cache = Collections.synchronizedMap(new LruCache<>(50));
 
     private final Map<String, RateLimiter> rateLimiters = new ConcurrentHashMap<>();
@@ -44,6 +45,11 @@ public class ApiServiceProxy implements ApiService{
     @Override
     public ApiResponse getData(String url, Map<String, String> headers, LocalDateTime evictionTime) {
         long currentTime = System.currentTimeMillis();
+
+        if (ApiServiceImpl.isValidUrl(url)) {
+            System.out.println("[ERROR] Invalid URL: " + url);
+            return null;
+        }
 
         RateLimiter rateLimiter = getRateLimiter(url);
         if (!rateLimiter.allowedRequest()) {
@@ -97,7 +103,8 @@ public class ApiServiceProxy implements ApiService{
         return CompletableFuture.supplyAsync(() -> getData(url, headers), executor);
     }
 
-    public CompletableFuture<ApiResponse> getDataAsync(String url, Map<String, String> headers, LocalDateTime evictionTime) {
+    public CompletableFuture<ApiResponse> getDataAsync(String url, Map<String, String> headers,
+            LocalDateTime evictionTime) {
         return CompletableFuture.supplyAsync(() -> getData(url, headers, evictionTime), executor);
     }
 
@@ -118,8 +125,7 @@ public class ApiServiceProxy implements ApiService{
                 "bypass", "illegal", "theft", "virus", "spy", "botnet", "keygen", "proxy", "attack", "exploit",
                 "ransomware", "hack", "cybercrime", "threat", "inappropriate", "abuse", "childporn", "gamble",
                 "lootbox", "counterfeit", "unauthorized", "blackhat", "trojan", "worm", "backdoor", "spybot", "adware",
-                "pharma", "pirated", "hentai", "seduce", "erotic"
-        );
+                "pharma", "pirated", "hentai", "seduce", "erotic");
 
         return maliciousKeywords.stream()
                 .anyMatch(keyword -> url.toLowerCase().contains(keyword));

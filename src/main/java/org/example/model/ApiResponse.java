@@ -3,9 +3,9 @@ package org.example.model;
 import java.awt.image.BufferedImage;
 
 public class ApiResponse {
-    private String text;          // JSON, text, XML, HTML
-    private BufferedImage image;  // PNG, JPG, GIF, etc.
-    private byte[] binary;        // PDF, ZIP, unknown binary
+    private String text; // JSON, text, XML, HTML
+    private BufferedImage image; // PNG, JPG, GIF, etc.
+    private byte[] binary; // PDF, ZIP, unknown binary
 
     public static ApiResponse text(String t) {
         ApiResponse r = new ApiResponse();
@@ -25,12 +25,27 @@ public class ApiResponse {
         return r;
     }
 
-    public boolean isText() { return text != null; }
-    public boolean isImage() { return image != null; }
-    public boolean isBinary() { return binary != null; }
+    public boolean isText() {
+        return text != null;
+    }
 
-    public String getText() { return text; }
-    public BufferedImage getImage() { return image; }
-    public byte[] getBinary() { return binary; }
+    public boolean isImage() {
+        return image != null;
+    }
+
+    public boolean isBinary() {
+        return binary != null;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public byte[] getBinary() {
+        return binary;
+    }
 }
-

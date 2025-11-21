@@ -7,6 +7,8 @@ import java.util.Map;
 
 public interface ApiService {
     ApiResponse getData(String url);
+
     ApiResponse getData(String url, Map<String, String> headers);
+
     ApiResponse getData(String url, Map<String, String> headers, LocalDateTime evictionTime);
 }

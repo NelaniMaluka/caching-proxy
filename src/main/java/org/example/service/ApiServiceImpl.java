@@ -7,6 +7,7 @@ import org.example.model.ApiResponse;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -19,11 +20,11 @@ public class ApiServiceImpl implements ApiService {
 
     private final HttpClient client = HttpClient.newHttpClient();
 
-    public  ApiResponse getData(String url) {
+    public ApiResponse getData(String url) {
         return getData(url, Map.of(), LocalDateTime.now().plusDays(30));
     }
 
-    public  ApiResponse getData(String url, Map<String, String> headers) {
+    public ApiResponse getData(String url, Map<String, String> headers) {
         return getData(url, headers, LocalDateTime.now().plusDays(30));
     }
 
@@ -35,11 +36,17 @@ public class ApiServiceImpl implements ApiService {
                 .withDelay(Duration.ofSeconds(2))
                 .withMaxRetries(3)
                 .withBackoff(Duration.ofSeconds(1), Duration.ofSeconds(4))
-                .onRetry(e -> System.out.println("Retry attempt #" + e.getAttemptCount() + " due to: " + e.getLastException().getMessage()))
+                .onRetry(e -> System.out.println(
+                        "Retry attempt #" + e.getAttemptCount() + " due to: " + e.getLastException().getMessage()))
                 .build();
 
         try {
             return Failsafe.with(retryPolicy).get(() -> {
+                if (isValidUrl(url)) {
+                    System.out.println("[ERROR] Invalid URL: " + url);
+                    return null;
+                }
+
                 HttpRequest.Builder builder = HttpRequest.newBuilder()
                         .uri(URI.create(url))
                         .GET();
@@ -115,6 +122,16 @@ public class ApiServiceImpl implements ApiService {
         } catch (Exception e) {
             log.error("Failed to convert response: {}", e.getMessage());
             return ApiResponse.binary(body);
+        }
+    }
+
+    public static boolean isValidUrl(String url) {
+        try {
+            URI uri = new URI(url);
+            return uri.getScheme() == null
+                    || (!uri.getScheme().equalsIgnoreCase("http") && !uri.getScheme().equalsIgnoreCase("https"));
+        } catch (URISyntaxException e) {
+            return true;
         }
     }
 

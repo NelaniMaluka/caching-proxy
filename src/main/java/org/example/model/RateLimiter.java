@@ -2,10 +2,10 @@ package org.example.model;
 
 public class RateLimiter {
 
-    private final int maxRequests;          // Max number of requests allowed
-    private final long timeWindowMillis;    // Time window (e.g., 1000 ms = 1 second)
+    private final int maxRequests; // Max number of requests allowed
+    private final long timeWindowMillis; // Time window (e.g., 1000 ms = 1 second)
 
-    private int requestCount = 0;           // Requests made in the current window
+    private int requestCount = 0; // Requests made in the current window
     private long windowStart = System.currentTimeMillis(); // Start time of current window
 
     public RateLimiter(int maxRequests, long timeWindowMillis) {
