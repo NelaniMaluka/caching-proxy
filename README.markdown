@@ -1,4 +1,4 @@
-# Cacheing Proxy API Service 🚀
+# Caching Proxy API Service 
 
 A **high-performance Java-based caching proxy** that fetches, caches, and serves API responses — supporting **text, images, and binary files** (PDFs, ZIPs, etc.). Built with modern **Java 23** features, **HTTP Client**, **Failsafe** for resilient retries, and a custom **LRU cache**.
 
@@ -102,8 +102,8 @@ Size: 13200 bytes
 ## Installation & Running
 
 ```bash
-git clone https://github.com/yourusername/caching-proxy-api.git
-cd caching-proxy-api
+git clone https://github.com/NelaniMaluka/caching-proxy.git
+cd caching-proxy
 
 # Compile (with modules if using Java 23+)
 javac --release 23 -d out src/main/java/module-info.java src/main/java/org/example/**/*.java
@@ -138,6 +138,9 @@ src/main/java/org/example/
 │   └─ ApiServiceProxy.java
 └─ model/
     ├─ ApiResponse.java
+    ├─ LruCache.java
+    ├─ RateLimiter.java
+    ├─ ResponseType.java
     └─ CacheEntry.java
 ```
 
